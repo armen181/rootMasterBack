@@ -1,13 +1,17 @@
 package com.master.root.rootmaster.models;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record Question (
-        int id,
-        int answer,
+import java.util.List;
+
+public record Question(
+        @JsonProperty("id")
+        Integer id,
+        @JsonProperty("question")
         String question,
-        List<String> options
+        @JsonProperty("answer_index")
+        Integer answerIndex,
+        @JsonProperty("answers")
+        List<String> answers
 ) {
 }

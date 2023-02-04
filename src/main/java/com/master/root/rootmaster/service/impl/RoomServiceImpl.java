@@ -1,30 +1,51 @@
 package com.master.root.rootmaster.service.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.master.root.rootmaster.exception.BadRequestException;
+import com.master.root.rootmaster.models.Question;
 import com.master.root.rootmaster.models.Room;
 import com.master.root.rootmaster.service.RoomService;
 import com.master.root.rootmaster.utils.RandomString;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
-    final static Random rnd = new Random();
+    private final static Random rnd = new Random();
+
+    private final ObjectMapper objectMapper;
 
     private final CacheLoader<Integer, Room> loader = new CacheLoader<>() {
         @Override
         public Room load(@NonNull Integer token) {
-            return new Room(token, new HashSet<>(), new HashSet<>());
+            return new Room(token, new HashSet<>(), getQuestions());
         }
     };
+
+    private Set<Question> getQuestions() {
+        Set<Question> questions = new HashSet<>();
+        try(var is = getClass().getClassLoader().getResourceAsStream("questions-1.json")) {
+            questions.addAll(objectMapper.readValue(is, new TypeReference<>() {}));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return questions;
+    }
 
     private final LoadingCache<Integer, Room> roomCache = CacheBuilder.newBuilder().build(loader);
 

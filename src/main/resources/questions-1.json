@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "question": "Find the root of 121",
+    "answers": ["11", "13", "9", "12"],
+    "answer_index": 1
+  },
+  {
+    "id": 2,
+    "question": "find root of 289",
+    "answers": ["15", "19", "17", "21"],
+    "answer_index": 2
+  },
+  {
+    "id": 3,
+    "question": "Find root of 529",
+    "answers": ["19", "21", "23", "27"],
+    "answer_index": 3
+  }
+]

@@ -8,8 +8,6 @@ import java.util.UUID;
 
 public interface QuestionService {
 
-    Question getNewQuestion(Integer token);
-
     Map<Player, Long> results(UUID questionId);
 
     void answer(UUID playerId, UUID questionId, UUID answerId);
