@@ -3,7 +3,7 @@
     "id": 1,
     "question": "Find the root of 121",
     "answers": ["11", "13", "9", "12"],
-    "answer_index": 1
+    "answer_index": 0
   },
   {
     "id": 2,
@@ -14,7 +14,7 @@
   {
     "id": 3,
     "question": "Find root of 529",
-    "answers": ["19", "21", "23", "27"],
+    "answers": ["19", "21", "27", "23"],
     "answer_index": 3
   }
 ]
