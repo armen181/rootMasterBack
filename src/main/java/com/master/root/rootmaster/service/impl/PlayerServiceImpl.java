@@ -24,6 +24,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public Player joinRoom(final String userName, final Integer token) {
         var player = new Player(userName);
+        player.setState(PlayerState.READY_TO_START);
         Set<Player> players = roomService.getRoom(token).players();
         if (players.contains(player)) {
             throw new BadRequestException("User with that name exists");

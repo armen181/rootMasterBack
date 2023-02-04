@@ -41,6 +41,10 @@ public class Player {
         this.score = score;
     }
 
+    public void addScore(int score) {
+        this.score += score;
+    }
+
     public boolean checkId(String requestId) {
         return id.equals(UUID.fromString(requestId));
     }

@@ -1,5 +1,6 @@
 package com.master.root.rootmaster.controller;
 
+import com.master.root.rootmaster.exception.BadRequestException;
 import com.master.root.rootmaster.models.Player;
 import com.master.root.rootmaster.models.enums.PlayerState;
 import com.master.root.rootmaster.service.RoomService;
@@ -27,5 +28,18 @@ public class PlayerController {
     public ResponseEntity<?> changePlayerState(final String id, final Integer token, final PlayerState state) {
         roomService.changePlayerState(id, token, state);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/ready")
+    public void ready(String userName, Integer roomId) {
+        roomService.getRoom(roomId)
+                .players()
+                .stream().filter(player -> player.getUserName().equals(userName))
+                .findFirst()
+                .map(player -> {
+                    player.setState(PlayerState.READY_TO_START);
+                    return player;
+                })
+                .orElseThrow(() -> new BadRequestException("player or or room not found"));
     }
 }
