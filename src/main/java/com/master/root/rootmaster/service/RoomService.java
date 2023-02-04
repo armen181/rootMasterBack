@@ -6,5 +6,5 @@ public interface RoomService {
 
     Room getRoom(Integer token);
 
-    Room createRoom();
+    Room createRoom(String userName);
 }

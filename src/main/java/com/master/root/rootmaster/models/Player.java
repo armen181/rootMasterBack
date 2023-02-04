@@ -6,6 +6,9 @@ import com.master.root.rootmaster.models.enums.PlayerState;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.master.root.rootmaster.models.enums.PlayerLastResult.NOT_ANSWERED;
+import static com.master.root.rootmaster.models.enums.PlayerState.PREPARING;
+
 public record Player(
         UUID id,
         String userName,
@@ -14,6 +17,10 @@ public record Player(
         int score
 
 ) {
+
+    public Player(String userName) {
+        this(UUID.randomUUID(), userName, PREPARING, NOT_ANSWERED, 0);
+    }
 
     @Override
     public boolean equals(final Object o) {

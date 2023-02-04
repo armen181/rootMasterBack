@@ -20,8 +20,8 @@ public class RoomController {
     private final PlayerService playerService;
 
     @PostMapping
-    public ResponseEntity<Room> createRoom() {
-        return ResponseEntity.ok(roomService.createRoom());
+    public ResponseEntity<Room> createRoom(final String userName) {
+        return ResponseEntity.ok(roomService.createRoom(userName));
     }
 
     @GetMapping

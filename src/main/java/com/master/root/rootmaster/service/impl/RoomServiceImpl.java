@@ -6,6 +6,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.master.root.rootmaster.exception.BadRequestException;
+import com.master.root.rootmaster.models.Player;
 import com.master.root.rootmaster.models.Question;
 import com.master.root.rootmaster.models.Room;
 import com.master.root.rootmaster.service.RoomService;
@@ -16,10 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+
+import static com.master.root.rootmaster.models.enums.PlayerLastResult.NOT_ANSWERED;
+import static com.master.root.rootmaster.models.enums.PlayerState.PREPARING;
 
 @Service
 @RequiredArgsConstructor
@@ -56,8 +57,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createRoom() {
-        return roomCache.getUnchecked(generateToken());
+    public Room createRoom(String userName) {
+        Room room = roomCache.getUnchecked(generateToken());
+        var player = new Player(userName);
+        Set<Player> players = getRoom(room.token()).players();
+        players.add(player);
+        return room;
     }
 
     private Integer generateToken() {
