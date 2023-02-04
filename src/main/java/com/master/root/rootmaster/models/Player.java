@@ -1,11 +1,18 @@
 package com.master.root.rootmaster.models;
 
+import com.master.root.rootmaster.models.enums.PlayerLastResult;
+import com.master.root.rootmaster.models.enums.PlayerState;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public record Player(
         UUID id,
-        String userName
+        String userName,
+        PlayerState state,
+        PlayerLastResult lastResult,
+        int score
+
 ) {
 
     @Override
