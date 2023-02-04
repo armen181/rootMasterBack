@@ -43,7 +43,7 @@ public class QuestionController {
                             it.setState(PlayerState.PREPARING);
                             if (question.answerIndex().equals(answerDto.answerIndex())) {
                                 it.setLastResult(PlayerLastResult.SUCCEED);
-                                it.addScore(10000 / answerDto.time());
+                                it.addScore(answerDto.time());
                             } else {
                                 it.setLastResult(PlayerLastResult.FAILED);
                             }

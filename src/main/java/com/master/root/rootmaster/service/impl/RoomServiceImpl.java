@@ -60,7 +60,7 @@ public class RoomServiceImpl implements RoomService {
     public Room createRoom(String userName) {
         Room room = roomCache.getUnchecked(generateToken());
         var player = new Player(userName);
-        player.setState(PlayerState.READY_TO_START);
+        player.setState(PlayerState.PREPARING);
         Set<Player> players = getRoom(room.token()).players();
         players.add(player);
         return room;
