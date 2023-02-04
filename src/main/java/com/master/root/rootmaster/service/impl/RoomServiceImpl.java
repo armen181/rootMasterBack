@@ -17,18 +17,19 @@ import java.util.Random;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+    final static Random rnd = new Random();
 
-    private final CacheLoader<String, Room> loader = new CacheLoader<>() {
+    private final CacheLoader<Integer, Room> loader = new CacheLoader<>() {
         @Override
-        public Room load(@NonNull String token) {
+        public Room load(@NonNull Integer token) {
             return new Room(token, new HashSet<>(), new HashSet<>());
         }
     };
 
-    private final LoadingCache<String, Room> roomCache = CacheBuilder.newBuilder().build(loader);
+    private final LoadingCache<Integer, Room> roomCache = CacheBuilder.newBuilder().build(loader);
 
     @Override
-    public Room getRoom(final String token) {
+    public Room getRoom(final Integer token) {
         return Optional.ofNullable(roomCache.getIfPresent(token))
                 .orElseThrow(() -> new BadRequestException("Room with token "+ token + " not found"));
     }
@@ -38,8 +39,8 @@ public class RoomServiceImpl implements RoomService {
         return roomCache.getUnchecked(generateToken());
     }
 
-    private String generateToken() {
-        return RandomString.getAlphaNumericString(4);
+    private Integer generateToken() {
+        return 10000 + rnd.nextInt(90000);
 
     }
 

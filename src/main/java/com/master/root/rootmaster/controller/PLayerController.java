@@ -18,7 +18,7 @@ public class PLayerController {
     private final RoomService roomService;
 
     @GetMapping
-    public ResponseEntity<Set<Player>> getPlayersInRoom(final String token) {
+    public ResponseEntity<Set<Player>> getPlayersInRoom(final Integer token) {
         return ResponseEntity.ok(roomService.getRoom(token).players());
     }
 }

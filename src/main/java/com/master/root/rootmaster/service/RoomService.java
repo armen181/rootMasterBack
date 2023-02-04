@@ -4,7 +4,7 @@ import com.master.root.rootmaster.models.Room;
 
 public interface RoomService {
 
-    Room getRoom(String token);
+    Room getRoom(Integer token);
 
     Room createRoom();
 }

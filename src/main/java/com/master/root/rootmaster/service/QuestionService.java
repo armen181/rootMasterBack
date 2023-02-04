@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface QuestionService {
 
-    Question getNewQuestion(String token);
+    Question getNewQuestion(Integer token);
 
     Map<Player, Long> results(UUID questionId);
 

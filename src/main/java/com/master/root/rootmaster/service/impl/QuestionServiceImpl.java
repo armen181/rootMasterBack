@@ -14,11 +14,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,23 +25,23 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final Random random = new Random();
 
-    private final CacheLoader<String, Question> loader = new CacheLoader<>() {
+    private final CacheLoader<Integer, Question> loader = new CacheLoader<>() {
         @Override
-        public Question load(@NonNull String token) {
+        public Question load(@NonNull Integer token) {
             var newQuestion = getNewQuestion(token);
             roomService.getRoom(token).questions().add(newQuestion);
             return newQuestion;
         }
     };
 
-    private final LoadingCache<String, Question> roomCache = CacheBuilder.newBuilder().build(loader);
+    private final LoadingCache<Integer, Question> roomCache = CacheBuilder.newBuilder().build(loader);
 
 
     @Override
-    public Question getNewQuestion(final String token) {
+    public Question getNewQuestion(final Integer token) {
         var origin = random.nextInt(100);
         int number = random.nextInt(origin-3, origin+3);
-        var questionNumber = (int)Math.pow(number,2);
+        int questionNumber = (int)Math.pow(number,2);
 
         var answers = Map.of(
                 new Answer(UUID.randomUUID(), number),
@@ -57,9 +54,11 @@ public class QuestionServiceImpl implements QuestionService {
                 false
         );
         return new Question(
-                UUID.randomUUID(),
+                1,
                 questionNumber,
-                answers
+                "questionNumber",
+                answers.keySet().stream().map(answer -> String.valueOf(answer.answer())).collect(Collectors.toList())
+
         );
     }
 

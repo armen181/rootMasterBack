@@ -17,7 +17,7 @@ public class PlayerServiceImpl implements PlayerService {
     private final RoomService roomService;
 
     @Override
-    public Player joinRoom(final String userName, final String token) {
+    public Player joinRoom(final String userName, final Integer token) {
         var player = new Player(
                 UUID.randomUUID(),
                 userName

@@ -25,14 +25,14 @@ public class RoomController {
     }
 
     @GetMapping
-    public ResponseEntity<Room> getRoom(final String token) {
+    public ResponseEntity<Room> getRoom(final Integer token) {
         return ResponseEntity.ok(roomService.getRoom(token));
     }
 
     @PostMapping("/join")
     public ResponseEntity<Player> joinRoom(
             final String userName,
-            final String token) {
+            final Integer token) {
         return ResponseEntity.ok(playerService.joinRoom(userName, token));
     }
 }
