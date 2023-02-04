@@ -9,18 +9,17 @@ import com.master.root.rootmaster.exception.BadRequestException;
 import com.master.root.rootmaster.models.Player;
 import com.master.root.rootmaster.models.Question;
 import com.master.root.rootmaster.models.Room;
+import com.master.root.rootmaster.models.enums.PlayerState;
 import com.master.root.rootmaster.service.RoomService;
-import com.master.root.rootmaster.utils.RandomString;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
-
-import static com.master.root.rootmaster.models.enums.PlayerLastResult.NOT_ANSWERED;
-import static com.master.root.rootmaster.models.enums.PlayerState.PREPARING;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +37,9 @@ public class RoomServiceImpl implements RoomService {
 
     private Set<Question> getQuestions() {
         Set<Question> questions = new HashSet<>();
-        try(var is = getClass().getClassLoader().getResourceAsStream("questions-1.json")) {
-            questions.addAll(objectMapper.readValue(is, new TypeReference<>() {}));
+        try (var is = getClass().getClassLoader().getResourceAsStream("questions-1.json")) {
+            questions.addAll(objectMapper.readValue(is, new TypeReference<>() {
+            }));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,7 +53,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room getRoom(final Integer token) {
         return Optional.ofNullable(roomCache.getIfPresent(token))
-                .orElseThrow(() -> new BadRequestException("Room with token "+ token + " not found"));
+                .orElseThrow(() -> new BadRequestException("Room with token " + token + " not found"));
     }
 
     @Override
@@ -63,6 +63,15 @@ public class RoomServiceImpl implements RoomService {
         Set<Player> players = getRoom(room.token()).players();
         players.add(player);
         return room;
+    }
+
+    @Override
+    public void changePlayerState(String id, Integer token, PlayerState newState) {
+        getRoom(token).players().stream()
+                .filter(p -> p.checkId(id))
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Room with token " + token + " not found, cannot change player '" + id + "state to"))
+                .setState(newState);
     }
 
     private Integer generateToken() {

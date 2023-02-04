@@ -1,6 +1,7 @@
 package com.master.root.rootmaster.controller;
 
 import com.master.root.rootmaster.models.Player;
+import com.master.root.rootmaster.models.enums.PlayerState;
 import com.master.root.rootmaster.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,5 +21,11 @@ public class PlayerController {
     @PostMapping
     public ResponseEntity<Set<Player>> getPlayersInRoom(final Integer token) {
         return ResponseEntity.ok(roomService.getRoom(token).players());
+    }
+
+    @PostMapping("/state")
+    public ResponseEntity<?> changePlayerState(final String id, final Integer token, final PlayerState state) {
+        roomService.changePlayerState(id, token, state);
+        return ResponseEntity.ok().build();
     }
 }
