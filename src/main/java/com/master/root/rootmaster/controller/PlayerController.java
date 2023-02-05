@@ -42,4 +42,11 @@ public class PlayerController {
                 })
                 .orElseThrow(() -> new BadRequestException("player or or room not found"));
     }
+
+    @PostMapping("/siktir")
+    public void siktir(String userName, Integer roomId) {
+        roomService.getRoom(roomId)
+                .players()
+                .removeIf(player -> player.getUserName().equals(userName));
+    }
 }
