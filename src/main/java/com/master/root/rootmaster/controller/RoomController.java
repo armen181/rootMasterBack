@@ -30,7 +30,7 @@ public class RoomController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<Player> joinRoom(
+    public ResponseEntity<Room> joinRoom(
             final String userName,
             final Integer token) {
         return ResponseEntity.ok(playerService.joinRoom(userName, token));

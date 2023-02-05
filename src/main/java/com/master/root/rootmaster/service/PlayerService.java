@@ -1,8 +1,8 @@
 package com.master.root.rootmaster.service;
 
-import com.master.root.rootmaster.models.Player;
+import com.master.root.rootmaster.models.Room;
 
 public interface PlayerService {
 
-    Player joinRoom(String userName, final Integer token);
+    Room joinRoom(String userName, final Integer token);
 }

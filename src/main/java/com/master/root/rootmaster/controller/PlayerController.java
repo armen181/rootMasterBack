@@ -24,15 +24,9 @@ public class PlayerController {
         return ResponseEntity.ok(roomService.getRoom(token).players());
     }
 
-    @PostMapping("/state")
-    public ResponseEntity<?> changePlayerState(final String id, final Integer token, final PlayerState state) {
-        roomService.changePlayerState(id, token, state);
-        return ResponseEntity.ok().build();
-    }
-
     @PostMapping("/ready")
-    public void ready(String userName, Integer roomId) {
-        roomService.getRoom(roomId)
+    public void ready(String userName, Integer token) {
+        roomService.getRoom(token)
                 .players()
                 .stream().filter(player -> player.getUserName().equals(userName))
                 .findFirst()
@@ -43,7 +37,7 @@ public class PlayerController {
                 .orElseThrow(() -> new BadRequestException("player or or room not found"));
     }
 
-    @PostMapping("/siktir")
+    @PostMapping("/leave")
     public void siktir(String userName, Integer roomId) {
         roomService.getRoom(roomId)
                 .players()
