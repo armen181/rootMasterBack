@@ -37,6 +37,19 @@ public class PlayerController {
                 .orElseThrow(() -> new BadRequestException("player or or room not found"));
     }
 
+    @PostMapping("/preparing")
+    public void preparing(String userName, Integer token) {
+        roomService.getRoom(token)
+                .players()
+                .stream().filter(player -> player.getUserName().equals(userName))
+                .findFirst()
+                .map(player -> {
+                    player.setState(PlayerState.PREPARING);
+                    return player;
+                })
+                .orElseThrow(() -> new BadRequestException("player or or room not found"));
+    }
+
     @PostMapping("/leave")
     public void siktir(String userName, Integer roomId) {
         roomService.getRoom(roomId)
